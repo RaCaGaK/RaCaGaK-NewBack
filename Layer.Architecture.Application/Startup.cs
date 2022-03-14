@@ -1,5 +1,6 @@
 using AutoMapper;
 using Layer.Architecture.Application.Models;
+using Layer.Architecture.Application.Models.PostReactions;
 using Layer.Architecture.Domain.Entities;
 using Layer.Architecture.Domain.Interfaces;
 using Layer.Architecture.Infra.Data.Context;
@@ -36,15 +37,44 @@ namespace Layer.Architecture.Application
 
             services.AddScoped<IBaseRepository<Template>, BaseRepository<Template>>();
             services.AddScoped<IBaseService<Template>, BaseService<Template>>();
+            
+            services.AddScoped<IBaseRepository<Comment>, BaseRepository<Comment>>();
+            services.AddScoped<IBaseService<Comment>, BaseService<Comment>>();
+            
+            services.AddScoped<IBaseRepository<Post>, BaseRepository<Post>>();
+            services.AddScoped<IBaseService<Post>, BaseService<Post>>();
+            
+            services.AddScoped<IBaseRepository<PostReaction>, BaseRepository<PostReaction>>();
+            services.AddScoped<IBaseService<PostReaction>, BaseService<PostReaction>>();
+            
+            services.AddScoped<IBaseRepository<Msg>, BaseRepository<Msg>>();
+            services.AddScoped<IBaseService<Msg>, BaseService<Msg>>();
 
             services.AddSingleton(new MapperConfiguration(config =>
             {
                 config.CreateMap<CreateUserModel, User>();
                 config.CreateMap<UpdateUserModel, User>();
                 config.CreateMap<User, UserModel>();
+
                 config.CreateMap<CreateTemplateModel, Template>();
                 config.CreateMap<UpdateTemplateModel, Template>();
                 config.CreateMap<Template, TemplateModel>();
+
+                config.CreateMap<CreateCommentModel, Comment>();
+                config.CreateMap<UpdateCommentModel, Comment>();
+                config.CreateMap<Comment, CommentModel>();
+                
+                config.CreateMap<CreatePostModel, Post>();
+                config.CreateMap<UpdatePostModel, Post>();
+                config.CreateMap<Post, PostModel>();
+                
+                config.CreateMap<CreatePostReactionsModel, PostReaction>();
+                config.CreateMap<UpdatePostReactionsModel, PostReaction>();
+                config.CreateMap<PostReaction, PostReactionsModel>();
+                
+                config.CreateMap<CreateMsgsModel, Msg>();
+                config.CreateMap<UpdateMsgsModel, Msg>();
+                config.CreateMap<Msg, MsgsModel>();
             }).CreateMapper());
         }
 

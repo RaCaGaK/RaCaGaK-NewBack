@@ -7,7 +7,7 @@ namespace Layer.Architecture.Domain.Entities
     {
         public string Msg1 { get; set; } = null!;
         public DateTime SentDate { get; set; }
-        public bool? ReadDate { get; set; }
+        public bool? IsRead { get; set; }
         public int FromUser { get; set; }
         public int ToUser { get; set; }
 

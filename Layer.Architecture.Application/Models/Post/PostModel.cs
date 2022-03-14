@@ -27,7 +27,6 @@ namespace Layer.Architecture.Application.Models
         public virtual PostReaction PostReaction { get; set; }
         public int PostReactionID { get; set; }
     }
-
     public class UpdatePostModel : PostModel
     {
     }
