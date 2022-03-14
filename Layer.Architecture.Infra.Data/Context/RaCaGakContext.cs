@@ -17,7 +17,6 @@ namespace Layer.Architecture.Infra.Data.Context
         public virtual DbSet<Msg> Msgs { get; set; } = null!;
         public virtual DbSet<Post> Posts { get; set; } = null!;
         public virtual DbSet<PostReaction> PostReactions { get; set; } = null!;
-        public virtual DbSet<Reaction> Reactions { get; set; } = null!;
         public virtual DbSet<Template> Templates { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -94,6 +93,11 @@ namespace Layer.Architecture.Infra.Data.Context
             {
                 entity.HasIndex(e => new { e.UserId, e.PostId }, "UQ__PostReac__8D29EA4CCA2039C5")
                     .IsUnique();
+                
+                entity.Property(e => e.ReactionType)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.PostReactions)
@@ -106,14 +110,6 @@ namespace Layer.Architecture.Infra.Data.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__PostReact__UserI__32E0915F");
-            });
-
-            modelBuilder.Entity<Reaction>(entity =>
-            {
-                entity.Property(e => e.ReactionType)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .IsFixedLength();
             });
 
             modelBuilder.Entity<Template>(entity =>

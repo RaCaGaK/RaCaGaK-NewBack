@@ -9,31 +9,31 @@ namespace Layer.Architecture.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class MsgsController : ControllerBase
     {
-        private readonly IBaseService<Post> _baseService;
+        private readonly IBaseService<Msg> _baseService;
 
-        public PostController(IBaseService<Post> basePostService)
+        public MsgsController(IBaseService<Msg> baseMsgService)
         {
-            _baseService = basePostService;
+            _baseService = baseMsgService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreatePostModel post)
+        public IActionResult Create([FromBody] CreateMsgsModel msg)
         {
-            if (post == null)
+            if (msg == null)
                 return NotFound();
 
-            return Execute(() => _baseService.Add<CreatePostModel, PostModel, PostValidator>(post));
+            return Execute(() => _baseService.Add<CreateMsgsModel, MsgsModel, MsgsValidator>(msg));
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdatePostModel post)
+        public IActionResult Update([FromBody] UpdateMsgsModel msg)
         {
-            if (post == null)
+            if (msg == null)
                 return NotFound();
 
-            return Execute(() => _baseService.Update<UpdatePostModel, PostModel, PostValidator>(post));
+            return Execute(() => _baseService.Update<UpdateMsgsModel, MsgsModel, MsgsValidator>(msg));
         }
 
         [HttpDelete("{id}")]
@@ -54,7 +54,7 @@ namespace Layer.Architecture.Application.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Execute(() => _baseService.Get<PostModel>());
+            return Execute(() => _baseService.Get<MsgsModel>());
         }
 
         [HttpGet("{id}")]
@@ -63,7 +63,7 @@ namespace Layer.Architecture.Application.Controllers
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _baseService.GetById<PostModel>(id));
+            return Execute(() => _baseService.GetById<MsgsModel>(id));
         }
 
         private IActionResult Execute(Func<object> func)

@@ -4,36 +4,37 @@ using Layer.Architecture.Domain.Interfaces;
 using Layer.Architecture.Service.Validators;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Layer.Architecture.Application.Models.PostReactions;
 
 namespace Layer.Architecture.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostReactionsController : ControllerBase
     {
-        private readonly IBaseService<Post> _baseService;
+        private readonly IBaseService<PostReaction> _baseService;
 
-        public PostController(IBaseService<Post> basePostService)
+        public PostReactionsController(IBaseService<PostReaction> basePostReactionsService)
         {
-            _baseService = basePostService;
+            _baseService = basePostReactionsService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreatePostModel post)
+        public IActionResult Create([FromBody] CreatePostReactionsModel postReaction)
         {
-            if (post == null)
+            if (postReaction == null)
                 return NotFound();
 
-            return Execute(() => _baseService.Add<CreatePostModel, PostModel, PostValidator>(post));
+            return Execute(() => _baseService.Add<CreatePostReactionsModel, PostReactionsModel, PostReactionsValidator>(postReaction));
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdatePostModel post)
+        public IActionResult Update([FromBody] UpdatePostReactionsModel postReaction)
         {
-            if (post == null)
+            if (postReaction == null)
                 return NotFound();
 
-            return Execute(() => _baseService.Update<UpdatePostModel, PostModel, PostValidator>(post));
+            return Execute(() => _baseService.Update<UpdatePostReactionsModel, PostReactionsModel, PostReactionsValidator>(postReaction));
         }
 
         [HttpDelete("{id}")]
@@ -54,7 +55,7 @@ namespace Layer.Architecture.Application.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Execute(() => _baseService.Get<PostModel>());
+            return Execute(() => _baseService.Get<PostReactionsModel>());
         }
 
         [HttpGet("{id}")]
@@ -63,7 +64,7 @@ namespace Layer.Architecture.Application.Controllers
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _baseService.GetById<PostModel>(id));
+            return Execute(() => _baseService.GetById<PostReactionsModel>(id));
         }
 
         private IActionResult Execute(Func<object> func)

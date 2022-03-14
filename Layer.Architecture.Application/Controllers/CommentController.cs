@@ -9,31 +9,31 @@ namespace Layer.Architecture.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class CommentController : ControllerBase
     {
-        private readonly IBaseService<Post> _baseService;
+        private readonly IBaseService<Comment> _baseService;
 
-        public PostController(IBaseService<Post> basePostService)
+        public CommentController(IBaseService<Comment> baseCommentService)
         {
-            _baseService = basePostService;
+            _baseService = baseCommentService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreatePostModel post)
+        public IActionResult Create([FromBody] CreateCommentModel comment)
         {
-            if (post == null)
+            if (comment == null)
                 return NotFound();
 
-            return Execute(() => _baseService.Add<CreatePostModel, PostModel, PostValidator>(post));
+            return Execute(() => _baseService.Add<CreateCommentModel, CommentModel, CommentValidator>(comment));
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdatePostModel post)
+        public IActionResult Update([FromBody] UpdateCommentModel comment)
         {
-            if (post == null)
+            if (comment == null)
                 return NotFound();
 
-            return Execute(() => _baseService.Update<UpdatePostModel, PostModel, PostValidator>(post));
+            return Execute(() => _baseService.Update<UpdateCommentModel, CommentModel, CommentValidator>(comment));
         }
 
         [HttpDelete("{id}")]
@@ -54,7 +54,7 @@ namespace Layer.Architecture.Application.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Execute(() => _baseService.Get<PostModel>());
+            return Execute(() => _baseService.Get<CommentModel>());
         }
 
         [HttpGet("{id}")]
@@ -63,7 +63,7 @@ namespace Layer.Architecture.Application.Controllers
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _baseService.GetById<PostModel>(id));
+            return Execute(() => _baseService.GetById<CommentModel>(id));
         }
 
         private IActionResult Execute(Func<object> func)
