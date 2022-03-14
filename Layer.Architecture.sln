@@ -15,15 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{E0CFB179-7D09-446A-82D4-9813B734D6D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layer.Architecture.Infra.CrossCutting", "Layer.Architecture.Infra.CrossCutting\Layer.Architecture.Infra.CrossCutting.csproj", "{087939EC-B7C7-4635-95E2-0AEE30F64B42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layer.Architecture.Infra.CrossCutting", "Layer.Architecture.Infra.CrossCutting\Layer.Architecture.Infra.CrossCutting.csproj", "{087939EC-B7C7-4635-95E2-0AEE30F64B42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layer.Architecture.Infra.Data", "Layer.Architecture.Infra.Data\Layer.Architecture.Infra.Data.csproj", "{38F8D945-F452-43CC-8AB5-1A802D5E9EBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layer.Architecture.Infra.Data", "Layer.Architecture.Infra.Data\Layer.Architecture.Infra.Data.csproj", "{38F8D945-F452-43CC-8AB5-1A802D5E9EBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layer.Architecture.Service", "Layer.Architecture.Service\Layer.Architecture.Service.csproj", "{9A840C8C-02A5-4092-ADA3-616A780FB3BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layer.Architecture.Service", "Layer.Architecture.Service\Layer.Architecture.Service.csproj", "{9A840C8C-02A5-4092-ADA3-616A780FB3BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layer.Architecture.Domain", "Layer.Architecture.Domain\Layer.Architecture.Domain.csproj", "{3BDB63E7-1BC6-461F-9A2C-87A3B9F7BE85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layer.Architecture.Domain", "Layer.Architecture.Domain\Layer.Architecture.Domain.csproj", "{3BDB63E7-1BC6-461F-9A2C-87A3B9F7BE85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layer.Architecture.Application", "Layer.Architecture.Application\Layer.Architecture.Application.csproj", "{56DBF4C8-61AA-4B6D-8AFD-A95D6B74E6E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layer.Architecture.Application", "Layer.Architecture.Application\Layer.Architecture.Application.csproj", "{56DBF4C8-61AA-4B6D-8AFD-A95D6B74E6E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
