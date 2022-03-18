@@ -1,17 +1,22 @@
 using AutoMapper;
+using Layer.Architecture.Application.Controllers;
 using Layer.Architecture.Application.Models;
 using Layer.Architecture.Application.Models.PostReactions;
 using Layer.Architecture.Domain.Entities;
 using Layer.Architecture.Domain.Interfaces;
 using Layer.Architecture.Infra.Data.Context;
 using Layer.Architecture.Infra.Data.Repository;
+using Layer.Architecture.Infra.Data.Repository.Interfaces;
 using Layer.Architecture.Service.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Layer.Architecture.Application
 {
@@ -26,15 +31,33 @@ namespace Layer.Architecture.Application
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(opt => {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+     .AddJwtBearer(options =>
+     {
+         options.TokenValidationParameters = new TokenValidationParameters
+         {
+             ValidateIssuer = true,
+             ValidateAudience = true,
+             ValidateLifetime = true,
+             ValidateIssuerSigningKey = true,
+             ValidIssuer = Configuration["Jwt:Issuer"],
+             ValidAudience = Configuration["Jwt:Audience"],
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+         };
+     });
             services.AddControllers();
 
             services.AddDbContext<RaCaGakContext>(opt => 
-                opt.UseSqlServer("Server=localhost\\MSSQLSERVER1;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
+                opt.UseSqlServer("Server=localhost\\MSSQLSERVER02;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
             );
 
             services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
             services.AddScoped<IBaseService<User>, BaseService<User>>();
-
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBaseRepository<Template>, BaseRepository<Template>>();
             services.AddScoped<IBaseService<Template>, BaseService<Template>>();
             
@@ -84,6 +107,8 @@ namespace Layer.Architecture.Application
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 

@@ -1,21 +1,29 @@
 ﻿using AutoMapper;
 using Layer.Architecture.Domain.Entities;
 using Layer.Architecture.Domain.Interfaces;
+using Layer.Architecture.Infra.Data.Repository;
+using Layer.Architecture.Infra.Data.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Layer.Architecture.Service.Services
 {
-    public class UserService : BaseService<User>
-    {
-        public UserService(IBaseRepository<User> baseRepository, IMapper mapper) : base(baseRepository, mapper)
-        {
-        }
+    public class UserService : BaseService<User>, IUserService
 
-        public User GetUserTeste(int id)
+    {
+        private readonly IUserRepository _userRepository;
+        public UserService(IBaseRepository<User> baseRepository, IMapper mapper, IUserRepository userRepository ) : base(baseRepository, mapper)
         {
-            return GetById<User>(id);
+            _userRepository = userRepository;
+        }
+        
+
+ 
+
+        public IEnumerable<User> GetUserByLogin(string login, string password)
+        {
+            return _userRepository.GetAuthenticatedUser(login, password);
         }
     }
 }
