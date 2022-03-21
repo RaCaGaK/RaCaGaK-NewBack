@@ -1,4 +1,6 @@
-﻿namespace Layer.Architecture.Application.Models
+﻿using Layer.Architecture.Domain.Entities;
+
+namespace Layer.Architecture.Domain.Models
 {
     public class UserModel
     {

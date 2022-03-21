@@ -5,15 +5,6 @@ namespace Layer.Architecture.Domain.Entities
 {
     public partial class User : BaseEntity
     {
-        public User()
-        {
-            Comments = new HashSet<Comment>();
-            MsgFromUserNavigations = new HashSet<Msg>();
-            MsgToUserNavigations = new HashSet<Msg>();
-            PostReactions = new HashSet<PostReaction>();
-            Posts = new HashSet<Post>();
-        }
-
         public string FullName { get; set; } = null!;
         public string NickName { get; set; } = null!;
         public string Email { get; set; } = null!;
@@ -25,5 +16,16 @@ namespace Layer.Architecture.Domain.Entities
         public virtual ICollection<Msg> MsgToUserNavigations { get; set; }
         public virtual ICollection<PostReaction> PostReactions { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+
+        protected User() { }
+
+        public User(string fullName, string nickName, string email, string imgUrl, string passwd)
+        {
+            FullName = fullName;
+            NickName = nickName;
+            Email = email;
+            ImgUrl = imgUrl;
+            Passwd = passwd;
+        }
     }
 }

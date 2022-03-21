@@ -1,7 +1,8 @@
-﻿namespace Layer.Architecture.Application.Models
+﻿namespace Layer.Architecture.Infra.Data.Builder
 {
-    public class CreateUserModel
+    public class UserBuilderCommand
     {
+        public int Id { get; set; }
         public string FullName { get; set; }
         public string NickName { get; set; }
         public string? ImgUrl { get; set; }
