@@ -1,5 +1,5 @@
 
-using Layer.Architecture.Application.Models;
+using Layer.Architecture.Domain.Models;
 using Layer.Architecture.Domain.Entities;
 using Layer.Architecture.Domain.Interfaces;
 using Layer.Architecture.Service.Services;
@@ -21,7 +21,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Layer.Architecture.Application.Controllers
 {
-  
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -45,33 +45,42 @@ namespace Layer.Architecture.Application.Controllers
             if (user == null)
                 return NotFound();
 
-            return Execute(() => _baseUserService.Add<CreateUserModel, UserModel, UserValidator>(user));
+            var newUser = new User(user.FullName, user.NickName, user.Email, user.ImgUrl, user.Passwd);
+
+            _userService.Add(newUser);
+
+            return Ok(newUser);
         }
 
-         [HttpPost, Route("login")]
-         public IActionResult Login([FromBody] LoginModel user)
-         {
-             if (user == null)
-                 return NotFound();
-             var userResponse = _userService.GetUserByLogin(user.Login, user.Passwd);
-             if(userResponse == null)
-             {
-                 return null;
-             }
-             var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-             var _issuer = _config["Jwt:Issuer"];
-             var _audience = _config["Jwt:Audience"];
-             var signinCredentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
-             var tokeOptions = new JwtSecurityToken(
-                 issuer: _issuer,
-                 audience: _audience,
-                 claims: new List<Claim>(),
-                 expires: DateTime.Now.AddMinutes(2),
-                 signingCredentials: signinCredentials);
-             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-              return Ok(new { Token = tokenString });
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login([FromBody] LoginModel user)
+        {
+            if (user == null)
+                return NotFound();
+
+            var userResponse = _userService.GetUserByLogin(user.Login, user.Passwd);
+            if (userResponse == null)
+            {
+                return NotFound("CLEITORIS");
+            }
+
+            var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var _issuer = _config["Jwt:Issuer"];
+            var _audience = _config["Jwt:Audience"];
+            var signinCredentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
+
+            var tokeOptions = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: new List<Claim>(),
+                expires: DateTime.Now.AddMinutes(2),
+                signingCredentials: signinCredentials);
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
             
-         }
+            return Ok(new { Token = tokenString });
+        }
 
         [Authorize]
         [HttpPut]
@@ -97,7 +106,7 @@ namespace Layer.Architecture.Application.Controllers
 
             return new NoContentResult();
         }
- 
+
         [HttpGet]
         public IActionResult Get()
         {

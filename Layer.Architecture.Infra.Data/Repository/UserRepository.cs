@@ -1,10 +1,12 @@
 ﻿using Layer.Architecture.Domain.Entities;
+using Layer.Architecture.Domain.Models;
 using Layer.Architecture.Infra.Data.Context;
 using Layer.Architecture.Infra.Data.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Layer.Architecture.Infra.Data.Repository
 {
@@ -17,11 +19,27 @@ namespace Layer.Architecture.Infra.Data.Repository
             _raCaGaKContext = raCaGaKContext;
         }
 
-        public IEnumerable<User> GetAuthenticatedUser(string login, string password)
+        public User GetUserById(int id)
         {
-            var userAthenticated = _raCaGaKContext.Set<User>().ToList().Where(x => (x.NickName == login || x.Email == login) && x.Passwd == password);
-            
-            return userAthenticated;
+            return _raCaGaKContext.Set<User>().Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public bool CreateUser(User user)
+        {
+            _raCaGaKContext.Add(user);
+            _raCaGaKContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool GetAuthenticatedUser(User user, string login, string password)
+        {
+            if (user == null || !BC.Verify(password, user.Passwd))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

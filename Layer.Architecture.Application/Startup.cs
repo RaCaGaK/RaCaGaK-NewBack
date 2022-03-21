@@ -1,7 +1,7 @@
 using AutoMapper;
 using Layer.Architecture.Application.Controllers;
-using Layer.Architecture.Application.Models;
-using Layer.Architecture.Application.Models.PostReactions;
+using Layer.Architecture.Domain.Models;
+using Layer.Architecture.Domain.Models.PostReactions;
 using Layer.Architecture.Domain.Entities;
 using Layer.Architecture.Domain.Interfaces;
 using Layer.Architecture.Infra.Data.Context;
@@ -50,8 +50,9 @@ namespace Layer.Architecture.Application
      });
             services.AddControllers();
 
-            services.AddDbContext<RaCaGakContext>(opt => 
-                opt.UseSqlServer("Server=localhost\\MSSQLSERVER02;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
+            services.AddDbContext<RaCaGakContext>(opt =>
+                // GABRIEL = opt.UseSqlServer("Server=localhost\\MSSQLSERVER02;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
+                opt.UseSqlServer("Server=localhost\\MSSQLSERVER1;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
             );
 
             services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
