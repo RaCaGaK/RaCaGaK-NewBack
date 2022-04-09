@@ -2,7 +2,7 @@
 using Data.Context;
 using Data.Repository.Interfaces;
 using Domain.Entities;
-using BC = BCrypt.Net.BCrypt;
+
 
 namespace Data.Repository
 {
@@ -27,10 +27,10 @@ namespace Data.Repository
 
             return true;
         }
-
-        public bool GetAuthenticatedUser(User user, string login, string password)
+        public User GetUserByLogin(string login)
         {
-            return user != null && BC.Verify(password, user.Passwd);
+            return _raCaGaKContext.Set<User>().ToList().FirstOrDefault(x => x.NickName == login || x.Email == login);
         }
+    
     }
 }

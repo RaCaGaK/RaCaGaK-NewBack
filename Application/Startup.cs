@@ -51,9 +51,9 @@ namespace Application
             services.AddControllers();
 
             services.AddDbContext<RaCaGakContext>(opt =>
-                // GABRIEL = opt.UseSqlServer("Server=localhost\\MSSQLSERVER02;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
-                opt.UseSqlServer(
-                    "Server=localhost\\MSSQLSERVER1;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
+                   opt.UseSqlServer("Server=localhost\\MSSQLSERVER02;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
+            //opt.UseSqlServer(
+            //    "Server=localhost\\MSSQLSERVER1;Database=RaKaGaK;TrustServerCertificate=True;User Id=sa;Password=P@ssw0rdsenac;")
             );
 
             services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();

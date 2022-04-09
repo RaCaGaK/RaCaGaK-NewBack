@@ -42,8 +42,21 @@ namespace Application.Controllers
             var newUser = new User(user.FullName, user.NickName, user.Email, user.ImgUrl, user.Passwd);
 
             _userService.Add(newUser);
+            var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var _audience = _config["Jwt:Audience"];
+            var signinCredentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
 
-            return Ok(newUser);
+            var tokeOptions = new JwtSecurityToken(
+                issuer: newUser.NickName,
+                audience: _audience,
+                claims: new List<Claim>(),
+                expires: DateTime.Now.AddMinutes(2),
+                signingCredentials: signinCredentials);
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+            return Ok(new { Token = tokenString, User = newUser.NickName, newUser.Email });
+
         }
 
         [HttpPost]
@@ -57,12 +70,11 @@ namespace Application.Controllers
             if (userResponse == null) return NotFound("CLEITORIS");
 
             var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var _issuer = _config["Jwt:Issuer"];
             var _audience = _config["Jwt:Audience"];
             var signinCredentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: _issuer,
+                issuer: user.Login,
                 audience: _audience,
                 claims: new List<Claim>(),
                 expires: DateTime.Now.AddMinutes(2),
