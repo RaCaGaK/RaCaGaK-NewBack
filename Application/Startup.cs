@@ -35,6 +35,7 @@ namespace Application
                     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
+               
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -48,6 +49,12 @@ namespace Application
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:3000")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddControllers();
 
             services.AddDbContext<RaCaGakContext>(opt =>
@@ -110,6 +117,8 @@ namespace Application
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
+
+            app.UseCors("MyPolicy");
 
             app.UseRouting();
 
