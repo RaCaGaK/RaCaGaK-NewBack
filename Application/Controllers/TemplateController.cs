@@ -2,6 +2,7 @@
 using Application.Models;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Validators;
 
@@ -54,6 +55,7 @@ namespace Application.Controllers
             return Execute(() => _baseService.Get<TemplateModel>());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

@@ -44,10 +44,11 @@ namespace Application.Controllers
             _userService.Add(newUser);
             var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var _audience = _config["Jwt:Audience"];
+            var _issuer = _config["Jwt:Issuer"];
             var signinCredentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: newUser.NickName,
+                issuer: _issuer,
                 audience: _audience,
                 claims: new List<Claim>(),
                 expires: DateTime.Now.AddMinutes(2),
@@ -55,7 +56,7 @@ namespace Application.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
 
-            return Ok(new { Token = tokenString, User = newUser.NickName, newUser.Email });
+            return Ok(new { Token = tokenString, User = newUser.NickName, newUser.Email, Id = newUser.Id });
 
         }
 
@@ -70,11 +71,12 @@ namespace Application.Controllers
             if (userResponse == null) return NotFound("CLEITORIS");
 
             var _secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var _issuer = _config["Jwt:Issuer"];
             var _audience = _config["Jwt:Audience"];
             var signinCredentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: user.Login,
+                issuer: _issuer,
                 audience: _audience,
                 claims: new List<Claim>(),
                 expires: DateTime.Now.AddMinutes(2),
@@ -82,7 +84,7 @@ namespace Application.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
 
-            return Ok(new {Token = tokenString});
+            return Ok(new { Token = tokenString, User = userResponse.NickName, userResponse.Email, Id = userResponse.Id });
         }
 
         [Authorize]
@@ -110,6 +112,14 @@ namespace Application.Controllers
             return new NoContentResult();
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("session")]
+        public Boolean SessionValidate()
+        {
+            return true;
+        }
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
